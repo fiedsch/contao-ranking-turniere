@@ -1,0 +1,13 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<?php // $this->showTemplateVars(); ?>
+
+<pre>
+  <?php print_r($this->listitems); ?>
+</pre>
+
+
+<?php $this->endblock(); ?>
+
