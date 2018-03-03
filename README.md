@@ -1,5 +1,7 @@
 # Ranking Turniere
 
+**Work in Progress, not ready to use!**
+
 Eine Turnierserie, die
 
 * an verschiedenen Tagen
@@ -28,9 +30,9 @@ Damit ergibt sich folgende hierarchische Datenstrutur:
 ```
 tl_ranking: id, name
 tl_rankingevent: id, pid=tl_ranking.id, datum
-tl_rankingresult: id, pid=tl_rankingevent.id, spieler=???.id, place
-// spieler=???.id könnte tl_member.id sein, oder die id einer eigenen Tabelle
-// tl_rankingplayer: id, name
+tl_rankingresult: id, pid=tl_rankingevent.id, spieler=???.id
+// spieler=???.id könnte tl_member.id sein, oder die id einer eigenen Tabelle(!)
+tl_rankingplayer: id, name
 ```
 
 ### `tl_member` vs `tl_rankingplayer`
@@ -55,7 +57,7 @@ tl_rankingresult: id, pid=tl_rankingevent.id, spieler=???.id, place
   * Platz eintragen (die Punkte werden automatisch berechnet, da sie sich aus einem
     festen Punkteschlüssel ergeben).
 
-## Programmierung (@Andreas)
+## Implementierung
 
 * DCA
   * `tl_ranking`
@@ -63,18 +65,16 @@ tl_rankingresult: id, pid=tl_rankingevent.id, spieler=???.id, place
   * `tl_rankingresult`
   * `tl_rankingplayer`
 * Frontendmodule:
-  * Rankingtabelle (insgesamt ud optional für ein "Ranking")
-  * Frontendmodul "ergebnisse übermitteln"? (Großes Thema dürfte hier wohl die eindeutige
+  * Rankingtabelle (insgesamt und optional für ein "Ranking")
+  * Frontendmodul "Ergebnisse übermitteln"? (Großes Thema dürfte hier wohl die eindeutige
     Benennung der Spieler sein. Z.B. untescheidliche Schreibweisen des gleichen Namens,
     oder "Andreas" vs. "Fiedsch" vs. ... für die gleiche Person. Wir können aber die Namen
     nicht aus einem Dropdown auswählen lassen, da neue Spieler jederzeit hinzu kommen
     können ohne sich vorher registrieren zu müssen.
-    @AF: evtl. alle bereits reg. Spieler als Daten auf der Seite und ein Textfeld mit
+    Idee: evtl. alle bereits reg. Spieler als Daten auf der Seite und ein Textfeld mit
     Autocomplete, das aber auch vollkommen neue Namen zulässt. Neue Namen könnten wir
     dann automatisch in der DB als neue `tl_rankingplayer`-Records anlegen. Bei Duplikaten
     müssten dann Datenkorrekturen stattfinden: (1) doppelten "Rankingplayer" löschen und
     (2) die id im "Rankingresult" nei setzen. Das sollte mittels filtern und
     "mehrere bearbeiten" relativ zügig gehen. (Dazu evtl. die `tl_rankingresult` losgelöst
     von der hierarchischen Datenstruktur als eigene Backend-Menüpunkt anbieten?
-
-    
