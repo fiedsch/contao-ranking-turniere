@@ -11,15 +11,20 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
                 'pid,name'   => 'unique'
             ],
         ],
+        // wenn wir nicht im Mode "display child records" aufgerufen wurden ist
+        // der "add"-Button sinnlos, da nicht klar ist, zu welcher 'pid' hinzugefügt
+        // werden soll.
+        'closed' => \Input::get('do') === 'ranking.result',
     ], // config
 
     'list' => [
         'sorting' => [
             // Für den Aufruf "als child records" (4) vs "als eigenständige Tabelle (eigener Menüpunkt)" (1)
             'mode' => \Input::get('do')==='ranking.ranking' ? 4 : 1, // 4 Displays the child records of a parent record
-            'fields' => ['platz'],
+            'fields' => ['pid'],
+            'format' => '%s.',
             'flag' => 11, // 11 == Sort ascending
-            'disableGrouping' => true,
+            // 'disableGrouping' => true,
             'panelLayout' => 'filter;search,limit',
             'headerFields' => ['date'],
             'child_record_callback' => function($row) {
@@ -29,18 +34,26 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
             }
         ],
         'label' => [
-            'fields' => ['platz', 'name'],
+            'fields' => ['platz', 'name:tl_rankingplayer.name'],
             'format' => '%s. %s',
             // Für den Aufruf als "eigenständige Tabelle"
             'label_callback' => function($row) {
+    /*
                 $member = \RankingplayerModel::findById($row['name']);
                 $event = \RankingeventModel::findById($row['pid']);
                 $ranking = \RankingModel::findById($event->pid);
-
                 return sprintf("%s, %s: %d. %s",
                     $ranking->name,
                     Date::parse('d.m.Y', $event->date), $row['platz'], $member->name);
-            }
+    */
+                $member = \RankingplayerModel::findById($row['name']);
+                return sprintf("%d. %s", $row['platz'], $member->name);
+            },
+            'group_callback' => function($group, $mode, $field, $row) {
+                $event = \RankingeventModel::findById($row['pid']);
+                $ranking = \RankingModel::findById($event->pid);
+                return sprintf('%s, %s', $ranking->name, \Contao\Date::parse('d.m.Y', $event->date));
+            },
         ],
         'global_operations' => [
             'all' => [
@@ -122,3 +135,12 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
     ], // fields
 
 ];
+
+
+// wenn wir nicht im Mode "display child records" aufgerufen wurden ist
+// der "add"-Button sinnlos, da nicht klar ist, zu welcher 'pid' hinzugefügt
+// werden soll. Daher oben 'closed' => false. Der 'copy'-Button ist aus dem
+// gleichen Grund unsinnnig:
+if (\Input::get('do') === 'ranking.result') {
+    unset($GLOBALS['TL_DCA']['tl_rankingresult']['list']['operations']['copy']);
+}
