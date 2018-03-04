@@ -2,7 +2,9 @@
 
 // Menüpunkte
 
-array_insert($GLOBALS['BE_MOD'], 0,
+$ligaverwaltung_index = array_search('liga', array_keys($GLOBALS['BE_MOD']));
+
+array_insert($GLOBALS['BE_MOD'], $ligaverwaltung_index ? $ligaverwaltung_index+1 : 1,
         [
             'ranking' => [
                 'ranking.spieler' => [
