@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
         'sorting' => [
             // Für den Aufruf "als child records" (4) vs "als eigenständige Tabelle (eigener Menüpunkt)" (1)
             'mode' => \Input::get('do')==='ranking.ranking' ? 4 : 1, // 4 Displays the child records of a parent record
-            'fields' => ['pid'],
+            'fields' => ['platz'],
             'format' => '%s.',
             'flag' => 11, // 11 == Sort ascending
             // 'disableGrouping' => true,
@@ -127,9 +127,10 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
             'exclude'   => true,
             'search'    => false,
             'filter'    => true,
+            'flag'      => 11, // sort ascending
             'inputType' => 'text',
-            'eval'      => ['tl_class' => 'w50', 'rgxp'=>'natural', 'maxlength' => 128],
-            'sql'       => "varchar(128) NOT NULL default ''",
+            'eval'      => ['tl_class' => 'w50', 'rgxp'=>'natural', 'maxlength' => 4],
+            'sql'       => "int(10) NULL",
         ],
 
     ], // fields
