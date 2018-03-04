@@ -96,3 +96,8 @@ $GLOBALS['TL_DCA']['tl_ranking'] = [
     ], // fields
 
 ];
+
+// Nur Administratoren dürfen Include-Elemente verwenden
+// if (!BackendUser::getInstance()->isAdmin) {
+//    unset($GLOBALS['TL_DCA']['tl_ranking']['list']['operations']['delete']);
+//}
