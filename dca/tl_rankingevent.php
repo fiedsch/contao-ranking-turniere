@@ -21,7 +21,12 @@ $GLOBALS['TL_DCA']['tl_rankingevent'] = [
             'flag' => 1, // 1 == Sort by initial letter ascending
             'panelLayout' => 'filter;search,limit',
             'headerFields' => ['name'],
-            'child_record_callback' => function($row) { return \Date::parse('d.m.Y', $row['date']); }
+            'child_record_callback' => function($row) {
+                return sprintf("<span class='%s'>%s</span>",
+                    $row['published'] === '1' ? '' : 'tl_gray',
+                    \Date::parse('d.m.Y', $row['date'])
+                );
+            }
         ],
         'label' => [
             'fields' => ['date'],
@@ -71,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_rankingevent'] = [
 
     'palettes' => [
         '__selector__' => [],
-        'default'      => '{title_legend},date',
+        'default'      => '{title_legend},date,published',
     ], // palettes
 
     'fields' => [
@@ -98,6 +103,16 @@ $GLOBALS['TL_DCA']['tl_rankingevent'] = [
             'flag'      => 7, // Sort by month ascending,
             'sql'       => "varchar(11) NOT NULL default ''",
         ],
+
+        'published' => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_rankingevent']['published'],
+            'exclude'   => true,
+            'search'    => false,
+            'filter'    => true,
+            'inputType' => 'checkbox',
+            'eval'      => ['tl_class' => 'w50 m12'],
+            'sql'       => "char(1) NOT NULL default ''",
+        ]
 
     ], // fields
 
