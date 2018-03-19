@@ -21,10 +21,10 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
         'sorting' => [
             // Für den Aufruf "als child records" (4) vs "als eigenständige Tabelle (eigener Menüpunkt)" (1)
             'mode' => \Input::get('do')==='ranking.ranking' ? 4 : 1, // 4 Displays the child records of a parent record
-            'fields' => ['platz'],
+            'fields' => ['pid','platz'],
             'format' => '%s.',
             'flag' => 11, // 11 == Sort ascending
-            // 'disableGrouping' => true,
+            'disableGrouping' => \Input::get('do')==='ranking.ranking',
             'panelLayout' => 'filter;search,limit',
             'headerFields' => ['date'],
             'child_record_callback' => function($row) {
@@ -52,6 +52,7 @@ $GLOBALS['TL_DCA']['tl_rankingresult'] = [
             'group_callback' => function($group, $mode, $field, $row) {
                 $event = \RankingeventModel::findById($row['pid']);
                 $ranking = \RankingModel::findById($event->pid);
+                // return json_encode($row);
                 return sprintf('%s, %s', $ranking->name, \Contao\Date::parse('d.m.Y', $event->date));
             },
         ],
