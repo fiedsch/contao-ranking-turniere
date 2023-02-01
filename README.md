@@ -1,6 +1,6 @@
 # Ranking Turniere
 
-**Work in Progress, not ready to use!**
+**Discontinued: use [fiedsch/contao-ranking-bundle](https://github.com/fiedsch/contao-ranking-bundle) instead!**
 
 Eine Turnierserie, die
 
